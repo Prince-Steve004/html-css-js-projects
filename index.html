@@ -5,39 +5,75 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio Homepage</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-        header { background: #333; color: #fff; padding: 1em; text-align: center; }
-        main { padding: 2em; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; }
-        .project { border: 1px solid #ddd; padding: 1em; border-radius: 5px; }
-        footer { text-align: center; padding: 1em; background: #333; color: #fff; position: relative; bottom: 0; width: 100%; }
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #f4f4f4;
+        }
+        header {
+            background: #35424a;
+            color: #ffffff;
+            padding: 10px 0;
+            width: 100%;
+            text-align: center;
+        }
+        .portfolio {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 10px;
+            padding: 20px;
+            max-width: 1200px;
+            width: 100%;
+        }
+        .project {
+            background: #ffffff;
+            border: 1px solid #dddddd;
+            border-radius: 5px;
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .project:hover {
+            transform: scale(1.05);
+        }
+        .project img {
+            max-width: 100%;
+            height: auto;
+        }
+        .project a {
+            display: block;
+            padding: 10px;
+            text-decoration: none;
+            color: #35424a;
+            font-weight: bold;
+            background: #e2e2e2;
+            border: none;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
     <header>
         <h1>My Portfolio</h1>
-        <p>A showcase of my projects</p>
+        <p>A collection of my projects</p>
     </header>
-    <main>
-        <div class="grid">
-            <!-- Example project items -->
-            <div class="project">
-                <h2><a href="/path/to/project1">Project 1</a></h2>
-                <p>Description for project 1.</p>
-            </div>
-            <div class="project">
-                <h2><a href="/path/to/project2">Project 2</a></h2>
-                <p>Description for project 2.</p>
-            </div>
-            <!-- Repeat similar structure for other projects -->
-            <div class="project">
-                <h2><a href="/path/to/project54">Project 54</a></h2>
-                <p>Description for project 54.</p>
-            </div>
+    <div class="portfolio">
+        <!-- Project examples, duplicate for all 54 projects with relevant links -->
+        <div class="project">
+            <img src="project1-thumbnail.jpg" alt="Project 1">
+            <a href="project1-folder/index.html">Project 1</a>
         </div>
-    </main>
-    <footer>
-        <p>&copy; 2026 Prince Steve</p>
-    </footer>
+        <div class="project">
+            <img src="project2-thumbnail.jpg" alt="Project 2">
+            <a href="project2-folder/index.html">Project 2</a>
+        </div>
+        <!-- Add all 54 projects in a similar format -->
+        <!-- Example for 54 total projects would be similar to above structure -->
+    </div>
 </body>
 </html>

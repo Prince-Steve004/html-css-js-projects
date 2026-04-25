@@ -1,69 +1,624 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio Homepage</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-color: #f4f4f4;
-        }
-        header {
-            background: #35424a;
-            color: #ffffff;
-            padding: 10px 0;
-            width: 100%;
-            text-align: center;
-        }
-        .portfolio {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 10px;
-            padding: 20px;
-            max-width: 1200px;
-            width: 100%;
-        }
-        .project {
-            background: #ffffff;
-            border: 1px solid #dddddd;
-            border-radius: 5px;
-            overflow: hidden;
-            text-align: center;
-            transition: transform 0.2s;
-        }
-        .project:hover {
-            transform: scale(1.05);
-        }
-        .project img {
-            max-width: 100%;
-            height: auto;
-        }
-        .project a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: #35424a;
-            font-weight: bold;
-            background: #e2e2e2;
-            border: none;
-            border-radius: 5px;
-            margin: 10px 0;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>HTML · CSS · JS Projects — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg-1:#071027;
+      --bg-2:#0f1724;
+      --muted:#94a3b8;
+      --accent:#6ee7b7;
+      --glass: rgba(255,255,255,0.04);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background:linear-gradient(180deg,var(--bg-1) 0%,var(--bg-2) 70%);
+      color:#e6eef8;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      min-height:100vh;
+    }
+
+    header{padding:48px 20px 28px;text-align:center}
+    .brand{max-width:1100px;margin:0 auto}
+    h1{margin:0;font-size:clamp(22px,4vw,38px);letter-spacing:-0.02em}
+    p.lead{margin:10px 0 0;color:var(--muted);font-size:clamp(13px,1.6vw,16px)}
+
+    .controls{max-width:1100px;margin:20px auto;display:flex;gap:12px;align-items:center;padding:0 20px}
+    .search{flex:1}
+    .search input{
+      width:100%;
+      padding:12px 16px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.06);
+      background:linear-gradient(180deg, rgba(255,255,255,0.012), transparent);
+      color:inherit;
+      font-size:14px;
+    }
+    .meta{min-width:160px;text-align:right;color:var(--muted);font-size:14px}
+
+    main{max-width:1100px;margin:20px auto 80px;padding:0 20px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(220px, 1fr));gap:16px}
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      padding:14px;border-radius:12px;backdrop-filter: blur(6px);
+      transition:transform .16s ease, box-shadow .16s ease; display:flex;flex-direction:column;gap:8px;min-height:92px;
+    }
+    .card:hover{transform:translateY(-6px);box-shadow:0 12px 28px rgba(2,6,23,0.6)}
+    .card .title{font-weight:600;color:#e6f7ee;font-size:15px}
+    .card .sub{color:var(--muted);font-size:13px}
+    .card a.open{margin-top:auto;display:inline-flex;align-items:center;gap:8px;background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 10px;border-radius:10px;color:var(--accent);text-decoration:none;font-weight:600}
+    .card .index{background:rgba(255,255,255,0.03);padding:6px 8px;border-radius:8px;font-weight:700;color:var(--muted);font-size:12px}
+
+    footer{max-width:1100px;margin:36px auto 60px;padding:0 20px;color:var(--muted);text-align:center;font-size:13px}
+
+    @media (max-width:520px){
+      .controls{flex-direction:column;align-items:stretch}
+      .meta{text-align:left}
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <h1>My Portfolio</h1>
-        <p>A collection of my projects</p>
-    </header>
-    <div class="portfolio">
-        <!-- Project examples, duplicate for all 54 projects with relevant links -->
-       <a href="html-css-js-projects/quiz-game">01-quiz-game</a>
+  <header>
+    <div class="brand">
+      <h1>HTML · CSS · JS Projects</h1>
+      <p class="lead">A curated collection of small web projects — click any card to open the example. Use search to find projects quickly.</p>
+    </div>
+  </header>
+
+  <div class="controls" role="region" aria-label="project controls">
+    <div class="search">
+      <input id="search" placeholder="Search projects (by number or name) — e.g. 'quiz' or '01'" aria-label="Search projects">
+    </div>
+    <div class="meta"><span id="count">54</span> projects</div>
+  </div>
+
+  <main>
+    <section class="grid" id="projects" aria-live="polite">
+      <!-- Cards 01 - 54 -->
+      <article class="card" data-search="01 quiz quiz-game">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">01</div><div style="font-size:12px;color:var(--muted)">01-quiz-game</div>
+        </div>
+        <div class="title">Quiz Game</div>
+        <div class="sub">Interactive quiz with score & progress.</div>
+        <a class="open" href="./01-quiz-game/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="02 color palette generator">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">02</div><div style="font-size:12px;color:var(--muted)">02-color-palette-generator</div>
+        </div>
+        <div class="title">Color Palette Generator</div>
+        <div class="sub">Generate and copy color palettes.</div>
+        <a class="open" href="./02-color-palette-generator/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="03 drag drop drag-and-drop">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">03</div><div style="font-size:12px;color:var(--muted)">03-drag-and-drop</div>
+        </div>
+        <div class="title">Drag & Drop</div>
+        <div class="sub">Draggable list demo using native drag events.</div>
+        <a class="open" href="./03-drag-and-drop/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="04 expense tracker">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">04</div><div style="font-size:12px;color:var(--muted)">04-expense-tracker</div>
+        </div>
+        <div class="title">Expense Tracker</div>
+        <div class="sub">Track expenses locally in the browser.</div>
+        <a class="open" href="./04-expense-tracker/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="05 bookmark saver">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">05</div><div style="font-size:12px;color:var(--muted)">05-bookmark-saver</div>
+        </div>
+        <div class="title">Bookmark Saver</div>
+        <div class="sub">Save and open bookmarks inside a simple app.</div>
+        <a class="open" href="./05-bookmark-saver/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="06 form validator">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">06</div><div style="font-size:12px;color:var(--muted)">06-form-validator</div>
+        </div>
+        <div class="title">Form Validator</div>
+        <div class="sub">Client-side validation examples.</div>
+        <a class="open" href="./06-form-validator/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="07 password generator">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">07</div><div style="font-size:12px;color:var(--muted)">07-password-generator</div>
+        </div>
+        <div class="title">Password Generator</div>
+        <div class="sub">Create strong passwords with options.</div>
+        <a class="open" href="./07-password-generator/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="08 todo todo-app tasks">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">08</div><div style="font-size:12px;color:var(--muted)">08-todo-app</div>
+        </div>
+        <div class="title">Todo App</div>
+        <div class="sub">Create, edit, and persist tasks.</div>
+        <a class="open" href="./08-todo-app/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="09 contact form">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">09</div><div style="font-size:12px;color:var(--muted)">09-contact-form</div>
+        </div>
+        <div class="title">Contact Form</div>
+        <div class="sub">Responsive contact form layout.</div>
+        <a class="open" href="./09-contact-form/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="10 pricing cards">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">10</div><div style="font-size:12px;color:var(--muted)">10-pricing-cards</div>
+        </div>
+        <div class="title">Pricing Cards</div>
+        <div class="sub">Clean pricing component examples.</div>
+        <a class="open" href="./10-pricing-cards/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="11 team members showcase">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">11</div><div style="font-size:12px;color:var(--muted)">11-team-members-showcase</div>
+        </div>
+        <div class="title">Team Members Showcase</div>
+        <div class="sub">Profiles and card layout for teams.</div>
+        <a class="open" href="./11-team-members-showcase/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="12 recipe finder">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">12</div><div style="font-size:12px;color:var(--muted)">12-recipe-finder</div>
+        </div>
+        <div class="title">Recipe Finder</div>
+        <div class="sub">Search and display recipes.</div>
+        <a class="open" href="./12-recipe-finder/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="13 currency converter">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">13</div><div style="font-size:12px;color:var(--muted)">13-currency-converter</div>
+        </div>
+        <div class="title">Currency Converter</div>
+        <div class="sub">Convert between currencies (demo).</div>
+        <a class="open" href="./13-currency-converter/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="14 github finder">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">14</div><div style="font-size:12px;color:var(--muted)">14-github-finder</div>
+        </div>
+        <div class="title">GitHub Finder</div>
+        <div class="sub">Search GitHub users (example).</div>
+        <a class="open" href="./14-github-finder/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="15 404 page">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">15</div><div style="font-size:12px;color:var(--muted)">15-404-page</div>
+        </div>
+        <div class="title">404 Page</div>
+        <div class="sub">Stylish not-found page designs.</div>
+        <a class="open" href="./15-404-page/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="16 newsletter signup">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">16</div><div style="font-size:12px;color:var(--muted)">16-newsletter-signup</div>
+        </div>
+        <div class="title">Newsletter Signup</div>
+        <div class="sub">Subscribe form layout with styles.</div>
+        <a class="open" href="./16-newsletter-signup/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="17 coming soon ui">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">17</div><div style="font-size:12px;color:var(--muted)">17-coming-soon-ui</div>
+        </div>
+        <div class="title">Coming Soon UI</div>
+        <div class="sub">Landing holding page styles.</div>
+        <a class="open" href="./17-coming-soon-ui/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="18 contact page">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">18</div><div style="font-size:12px;color:var(--muted)">18-contact-page</div>
+        </div>
+        <div class="title">Contact Page</div>
+        <div class="sub">A full contact page layout.</div>
+        <a class="open" href="./18-contact-page/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="19 faq accordion">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">19</div><div style="font-size:12px;color:var(--muted)">19-faq-accordion</div>
+        </div>
+        <div class="title">FAQ Accordion</div>
+        <div class="sub">Collapsible FAQ items demo.</div>
+        <a class="open" href="./19-faq-accordion/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="20 team members ui">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">20</div><div style="font-size:12px;color:var(--muted)">20-team-members-ui</div>
+        </div>
+        <div class="title">Team Members UI</div>
+        <div class="sub">Grid of team member cards.</div>
+        <a class="open" href="./20-team-members-ui/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="21 star rating">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">21</div><div style="font-size:12px;color:var(--muted)">21-star-rating</div>
+        </div>
+        <div class="title">Star Rating</div>
+        <div class="sub">Interactive rating component.</div>
+        <a class="open" href="./21-star-rating/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="22 confetti">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">22</div><div style="font-size:12px;color:var(--muted)">22-confetti</div>
+        </div>
+        <div class="title">Confetti</div>
+        <div class="sub">Confetti animation demo.</div>
+        <a class="open" href="./22-confetti/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="23 quote generator">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">23</div><div style="font-size:12px;color:var(--muted)">23-quote-generator</div>
+        </div>
+        <div class="title">Quote Generator</div>
+        <div class="sub">Generate inspirational quotes.</div>
+        <a class="open" href="./23-quote-generator/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="24 password toggle">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">24</div><div style="font-size:12px;color:var(--muted)">24-password-toggle</div>
+        </div>
+        <div class="title">Password Toggle</div>
+        <div class="sub">Show/hide password UX pattern.</div>
+        <a class="open" href="./24-password-toggle/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="25 cookie consent">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">25</div><div style="font-size:12px;color:var(--muted)">25-cookie-consent</div>
+        </div>
+        <div class="title">Cookie Consent</div>
+        <div class="sub">Cookie banner and persistence demo.</div>
+        <a class="open" href="./25-cookie-consent/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="26 expanding gallery">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">26</div><div style="font-size:12px;color:var(--muted)">26-expanding-gallery</div>
+        </div>
+        <div class="title">Expanding Gallery</div>
+        <div class="sub">Clickable images expand to focus.</div>
+        <a class="open" href="./26-expanding-gallery/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="27 dark mode toggle">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">27</div><div style="font-size:12px;color:var(--muted)">27-dark-mode-toggle</div>
+        </div>
+        <div class="title">Dark Mode Toggle</div>
+        <div class="sub">Toggle light/dark themes.</div>
+        <a class="open" href="./27-dark-mode-toggle/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="28 image shuffler">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">28</div><div style="font-size:12px;color:var(--muted)">28-image-shuffler</div>
+        </div>
+        <div class="title">Image Shuffler</div>
+        <div class="sub">Shuffle images with animation.</div>
+        <a class="open" href="./28-image-shuffler/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="29 countdown timer">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">29</div><div style="font-size:12px;color:var(--muted)">29-countdown-timer</div>
+        </div>
+        <div class="title">Countdown Timer</div>
+        <div class="sub">Countdown and time formatting demo.</div>
+        <a class="open" href="./29-countdown-timer/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="30 avatar generator">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">30</div><div style="font-size:12px;color:var(--muted)">30-avatar-generator</div>
+        </div>
+        <div class="title">Avatar Generator</div>
+        <div class="sub">Create random avatar images.</div>
+        <a class="open" href="./30-avatar-generator/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="31 otp input ui">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">31</div><div style="font-size:12px;color:var(--muted)">31-otp-input-ui</div>
+        </div>
+        <div class="title">OTP Input UI</div>
+        <div class="sub">OTP input UX with auto-focus.</div>
+        <a class="open" href="./31-otp-input-ui/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="32 password strength meter">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">32</div><div style="font-size:12px;color:var(--muted)">32-password-strength-meter</div>
+        </div>
+        <div class="title">Password Strength Meter</div>
+        <div class="sub">Visualize password strength.</div>
+        <a class="open" href="./32-password-strength-meter/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="33 qr code generator">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">33</div><div style="font-size:12px;color:var(--muted)">33-qr-code-generator</div>
+        </div>
+        <div class="title">QR Code Generator</div>
+        <div class="sub">Generate QR codes from text/URLs.</div>
+        <a class="open" href="./33-qr-code-generator/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="34 progress steps">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">34</div><div style="font-size:12px;color:var(--muted)">34-progress-steps</div>
+        </div>
+        <div class="title">Progress Steps</div>
+        <div class="sub">Multi-step progress indicator.</div>
+        <a class="open" href="./34-progress-steps/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="35 stats cards">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">35</div><div style="font-size:12px;color:var(--muted)">35-stats-cards</div>
+        </div>
+        <div class="title">Stats Cards</div>
+        <div class="sub">Dashboard style stat cards.</div>
+        <a class="open" href="./35-stats-cards/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="36 ecommerce cart e-commerce-cart">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">36</div><div style="font-size:12px;color:var(--muted)">36-e-commerce-cart</div>
+        </div>
+        <div class="title">E-commerce Cart</div>
+        <div class="sub">Simple cart interactions demo.</div>
+        <a class="open" href="./36-e-commerce-cart/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="37 gender predicter predictor">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">37</div><div style="font-size:12px;color:var(--muted)">37-gender-predicter</div>
+        </div>
+        <div class="title">Gender Predicter</div>
+        <div class="sub">Name-based gender prediction demo.</div>
+        <a class="open" href="./37-gender-predicter/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="38 order history">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">38</div><div style="font-size:12px;color:var(--muted)">38-order-history</div>
+        </div>
+        <div class="title">Order History</div>
+        <div class="sub">Paginated order list example.</div>
+        <a class="open" href="./38-order-history/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="39 border radius previewer">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">39</div><div style="font-size:12px;color:var(--muted)">39-border-radius-previewer</div>
+        </div>
+        <div class="title">Border Radius Previewer</div>
+        <div class="sub">Adjust border radius visually.</div>
+        <a class="open" href="./39-border-radius-previewer/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="40 box shadow generator">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">40</div><div style="font-size:12px;color:var(--muted)">40-box-shadow-generator</div>
+        </div>
+        <div class="title">Box Shadow Generator</div>
+        <div class="sub">Craft box-shadow CSS visually.</div>
+        <a class="open" href="./40-box-shadow-generator/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="41 credit card formatter">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">41</div><div style="font-size:12px;color:var(--muted)">41-credit-card-formatter</div>
+        </div>
+        <div class="title">Credit Card Formatter</div>
+        <div class="sub">Format/validate credit card inputs.</div>
+        <a class="open" href="./41-credit-card-formatter/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="42 notification bell">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">42</div><div style="font-size:12px;color:var(--muted)">42-notification-bell</div>
+        </div>
+        <div class="title">Notification Bell</div>
+        <div class="sub">Notification dropdown UI.</div>
+        <a class="open" href="./42-notification-bell/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="43 overlapping avatars">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">43</div><div style="font-size:12px;color:var(--muted)">43-overlapping-avatars</div>
+        </div>
+        <div class="title">Overlapping Avatars</div>
+        <div class="sub">Avatar group visual pattern.</div>
+        <a class="open" href="./43-overlapping-avatars/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="44 tic tac toe">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">44</div><div style="font-size:12px;color:var(--muted)">44-tic-tac-toe</div>
+        </div>
+        <div class="title">Tic Tac Toe</div>
+        <div class="sub">Classic game with basic AI.</div>
+        <a class="open" href="./44-tic-tac-toe/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="45 character counter">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">45</div><div style="font-size:12px;color:var(--muted)">45-character-counter</div>
+        </div>
+        <div class="title">Character Counter</div>
+        <div class="sub">Count characters in text input.</div>
+        <a class="open" href="./45-character-counter/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="46 pokemon viewer">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">46</div><div style="font-size:12px;color:var(--muted)">46-pokemon-viewer</div>
+        </div>
+        <div class="title">Pokemon Viewer</div>
+        <div class="sub">Fetch and display pokemon data (API demo).</div>
+        <a class="open" href="./46-pokemon-viewer/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="47 country lookup">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">47</div><div style="font-size:12px;color:var(--muted)">47-country-lookup</div>
+        </div>
+        <div class="title">Country Lookup</div>
+        <div class="sub">Search countries and details.</div>
+        <a class="open" href="./47-country-lookup/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="48 random meal generator">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">48</div><div style="font-size:12px;color:var(--muted)">48-random-meal-generator</div>
+        </div>
+        <div class="title">Random Meal Generator</div>
+        <div class="sub">Get random meal recipes (API demo).</div>
+        <a class="open" href="./48-random-meal-generator/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="49 scroll progress">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">49</div><div style="font-size:12px;color:var(--muted)">49-scroll-progress</div>
+        </div>
+        <div class="title">Scroll Progress</div>
+        <div class="sub">Page scroll indicator demo.</div>
+        <a class="open" href="./49-scroll-progress/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="50 crypto dashboard">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">50</div><div style="font-size:12px;color:var(--muted)">50-crypto-dashboard</div>
+        </div>
+        <div class="title">Crypto Dashboard</div>
+        <div class="sub">Dashboard layout for crypto prices.</div>
+        <a class="open" href="./50-crypto-dashboard/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="51 split page design">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">51</div><div style="font-size:12px;color:var(--muted)">51-split-page-design</div>
+        </div>
+        <div class="title">Split Page Design</div>
+        <div class="sub">Split-screen landing design pattern.</div>
+        <a class="open" href="./51-split-page-design/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="52 leaderboard">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">52</div><div style="font-size:12px;color:var(--muted)">52-leaderboard</div>
+        </div>
+        <div class="title">Leaderboard</div>
+        <div class="sub">Leaderboard with sorting example.</div>
+        <a class="open" href="./52-leaderboard/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="53 blog card">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">53</div><div style="font-size:12px;color:var(--muted)">53-blog-card</div>
+        </div>
+        <div class="title">Blog Card</div>
+        <div class="sub">Article card preview layout.</div>
+        <a class="open" href="./53-blog-card/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+      <article class="card" data-search="54 chat list ui">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="index">54</div><div style="font-size:12px;color:var(--muted)">54-chat-list-ui</div>
+        </div>
+        <div class="title">Chat List UI</div>
+        <div class="sub">Chat list and conversation preview.</div>
+        <a class="open" href="./54-chat-list-ui/" target="_blank" rel="noopener">Open Project ↗</a>
+      </article>
+
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2026 Your Name. Built with HTML, CSS & JavaScript.</p>
+  </footer>
+
+  <script>
+    (function(){
+      const search = document.getElementById('search');
+      const grid = document.getElementById('projects');
+      const items = Array.from(grid.querySelectorAll('.card'));
+      const countEl = document.getElementById('count');
+
+      function normalize(s){
+        return String(s || '').toLowerCase();
+      }
+
+      function applyFilter(q){
+        const term = normalize(q).trim();
+        let visible = 0;
+        items.forEach(card => {
+          const data = normalize(card.dataset.search + ' ' + card.querySelector('.title').textContent + ' ' + card.querySelector('.sub').textContent);
+          if(!term || data.includes(term)){
+            card.style.display = '';
+            visible++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+        countEl.textContent = visible;
+      }
+
+      // quick match when typing numbers like "01"
+      search.addEventListener('input', e => applyFilter(e.target.value));
+
+      // keyboard: focus first match when pressing Enter
+      search.addEventListener('keydown', e => {
+        if(e.key === 'Enter'){
+          const first = items.find(i => i.style.display !== 'none');
+          if(first){
+            const link = first.querySelector('a.open');
+            if(link) link.click();
+          }
+        }
+      });
+
+      // init
+      applyFilter('');
+    })();
+  </script>
 </body>
 </html>
